@@ -61,7 +61,7 @@ O algoritmo de Ford-Fulkerson foi escolhido para resolver o problema de fluxo m�
 ## Instalação e Uso
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/reliefroute.git
+git clone https://github.com/seu-usuario/EmergencyFlow.git
 
 # Instale as dependências
 pip install -r requirements.txt
