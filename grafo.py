@@ -61,6 +61,14 @@ class Grafo:
             self._arestas.pop(pair)
             self._lista_adj[pair[0]].remove(pair[1])
     
+    def objective_function(self):
+        soma = 0
+        for vertice in self._vertices.values():
+            soma += vertice.suprimentos - vertice.demanda
+        
+        return abs(soma)
+            
+    
     def __str__(self):
         texto = ""
         
