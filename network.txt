@@ -1,11 +1,24 @@
-1
-2
-3
-4
-5
-6
-1 2 10 10 0.5
-1 5 2 5 0.6
-2 3 1 1 0.1
-4 5 15 15 0.9
-1 6 2 2 0.3
+Padang_city 843.37 984.02
+Solok_regency 295.40 323.52
+South_Pesisir_regency 317.96 403.24
+Padang_Pariaman_reg 267.21 438.02
+Pariaman_city 37.63 79.49
+Solok_city 64.83 53.80
+Padang_Panjang_city 66.52 50.79
+Tanah_Datar_regency 309.10 302.65
+Bukittinggi_city 134.87 96.93
+Agam_regency 318.73 387.66
+West_Pasaman_reg 21.92 304.41
+Pasaman_regency 230.21 235.23
+Padang_city Solok_regency 300 0.1
+Padang_city South_Pesisir_regency 350 0.15
+South_Pesisir_regency Padang_Pariaman_reg 300 0.2
+Padang_Pariaman_reg Pariaman_city 50 0.1
+Pariaman_city Bukittinggi_city 150 0.05
+Solok_regency Tanah_Datar_regency 250 0.1
+Tanah_Datar_regency Bukittinggi_city 200 0.05
+Bukittinggi_city Agam_regency 180 0.1
+Agam_regency West_Pasaman_reg 200 0.15
+West_Pasaman_reg Pasaman_regency 100 0.1
+Pasaman_regency Solok_city 150 0.1
+Solok_city Padang_Panjang_city 100 0.2

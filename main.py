@@ -9,13 +9,17 @@ def carregar_grafo(file_name):
 
     for line in lines:
         parts = line.split()
-        if len(parts) == 1:  # Vértice
-            grafo.adicionar_vertice(parts[0])
-        elif len(parts) == 5:  # Aresta
-            grafo.adicionar_aresta(parts[0], parts[1], parts[2], parts[3], parts[4])
+        if len(parts) == 3:  # Vértice
+            grafo.adicionar_vertice(*parts)
+        elif len(parts) == 4:  # Aresta
+            grafo.adicionar_aresta(*parts)
 
 
 # Carregando os dados do arquivo
 carregar_grafo('network.txt')
 
-print(grafo)
+print("ANTES\n", grafo)
+
+grafo.simular_bloqueio()
+
+print("\nDEPOIS\n", grafo)
