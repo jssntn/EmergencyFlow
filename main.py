@@ -1,0 +1,14 @@
+from grafo import Grafo
+
+grafo = Grafo()
+
+f = open("network.txt", "r")
+
+for line in f.readlines():
+    parts = line.split()
+    if len(parts) == 2:
+        grafo.adicionar_no(*parts)
+    elif len(parts) == 4:
+        grafo.adicionar_aresta(*parts)
+
+
