@@ -1,124 +1,170 @@
-# EmergencyFlow: Sistema de Otimização de Rotas para Auxílio Humanitário
+# Priority-based Emergency Distribution Algorithm
 
-## Descrição do Projeto
-EmergencyFlow é um sistema de otimização de rotas desenvolvido para auxiliar na logística de distribuição de suprimentos durante desastres naturais. Utilizando conceitos de teoria dos grafos e fluxo em redes, o sistema calcula rotas otimizadas para garantir a entrega eficiente de recursos às áreas afetadas.
+## Overview
+This algorithm is an adaptation of network flow techniques for emergency supply distribution, specifically designed to handle priority-based routing in disaster response scenarios. It optimizes the distribution of emergency supplies by considering both time constraints and the varying urgency levels of different affected areas.
 
-## Modelagem do Problema
+## Key Features
+- Priority-based routing for emergency supplies
+- Multiple path optimization
+- Consideration of travel and processing times
+- Capacity constraints for transportation routes
+- Flexible priority assignment for affected areas
 
-### Estrutura de Dados
-O projeto utiliza uma combinação de Lista de Arestas e Dicionário de Vértices para representar o grafo. Esta escolha foi baseada nas seguintes considerações:
+## Prerequisites
+- Python 3.6 or higher
+- Basic Python packages: `heapq`, `collections`
 
-1. **Flexibilidade na Representação**
-   - Facilita a adição de atributos extras em vértices e arestas
-   - Permite representação natural de informações como estado da rota e tipos de suprimentos
-   - Suporta atualizações dinâmicas do estado da rede
+## Installation
+1. Clone this repository
+2. No additional package installation is required beyond Python's standard library
 
-2. **Eficiência Computacional**
-   - Acesso O(1) aos vértices através do dicionário
-   - Iteração eficiente sobre arestas para encontrar caminhos aumentantes
-   - Boa performance para grafos esparsos
+## Usage
 
-3. **Manutenibilidade**
-   - Estrutura orientada a objetos clara e modular
-   - Facilidade de debug e visualização
-   - Código mais legível e organizado
-
-### Algoritmo de Ford-Fulkerson
-O algoritmo de Ford-Fulkerson foi escolhido para resolver o problema de fluxo máximo pelos seguintes motivos:
-
-1. **Adequação ao Problema**
-   - Garante a otimalidade do fluxo máximo
-   - Permite adaptações para múltiplas restrições
-   - Funciona bem com a estrutura de dados escolhida
-
-2. **Características**
-   - Complexidade O(|E|·f), onde |E| é o número de arestas e f é o fluxo máximo
-   - Facilita a incorporação de restrições adicionais
-
-
-
-## Funcionalidades
-
-1. **Gestão de Rotas**
-   - Adição/remoção de rotas
-   - Atualização de status de disponibilidade
-   - Monitoramento de capacidade
-
-2. **Otimização de Fluxo**
-   - Cálculo de rotas otimizadas
-   - Consideração de múltiplas restrições
-   - Adaptação a mudanças em tempo real
-
-3. **Análise de Rede**
-   - Identificação de gargalos
-   - Sugestão de rotas alternativas
-   - Relatórios de utilização
-
-## Requisitos
-- Python 3.8+
-- Bibliotecas: (listar dependências)
-
-## Instalação e Uso
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/EmergencyFlow.git
-
-# Instale as dependências
-pip install -r requirements.txt
-
-# Execute o programa
-python main.py
-```
-
-## Exemplo de Uso
+### Basic Setup
 ```python
-# Criar uma instância do grafo
-grafo = Grafo()
+from emergency_network import EmergencyNetwork
 
-# Adicionar vértices
-grafo.adicionar_vertice("A", "origem")
-grafo.adicionar_vertice("B", "intermediario")
-grafo.adicionar_vertice("C", "destino")
+# Define your network structure
+vertices = {'source', 'location1', 'location2', 'destination'}
+edges = {('source', 'location1'), ('location1', 'destination')}
 
-# Adicionar arestas
-grafo.adicionar_aresta("A", "B", 100, 10)
-grafo.adicionar_aresta("B", "C", 50, 5)
+# Define priorities (higher number = higher priority)
+priorities = {
+    'location1': 1,  # Low priority
+    'location2': 3   # High priority
+}
 
-# Calcular fluxo máximo
-fluxo = grafo.calcular_fluxo_maximo("A", "C")
+# Create network instance
+network = EmergencyNetwork(vertices, edges, priorities)
 ```
 
-## Decisões de Projeto
+### Adding Network Details
+```python
+# Add routes with capacities and travel times
+network.add_edge('source', 'location1', capacity=10, travel_time=2)
+network.add_edge('location1', 'destination', capacity=5, travel_time=1)
 
-### Por que Lista de Arestas + Dicionário de Vértices?
-1. **Flexibilidade**: Facilita a adição de novos atributos e funcionalidades
-2. **Performance**: Boa eficiência para as operações mais comuns
-3. **Clareza**: Estrutura intuitiva e fácil de manter
+# Set processing times at locations
+network.set_vertex_residence_time('location1', time=1)
+```
 
-### Por que Ford-Fulkerson?
-1. **Simplicidade**: Algoritmo bem estabelecido e de fácil implementação
-2. **Adaptabilidade**: Pode ser modificado para incluir restrições adicionais
-3. **Garantia**: Encontra sempre o fluxo máximo ótimo
+### Running the Distribution
+```python
+# Distribute 20 units of supplies
+paths, times, total_flow = network.distribute_supplies('source', 'destination', 20)
+```
 
-## Limitações e Trabalhos Futuros
+## Understanding the Output
+- `paths`: List of paths taken and their flow amounts
+- `times`: Time taken for each path
+- `total_flow`: Total amount of supplies successfully distributed
 
-### Limitações Atuais
-- Não considera múltiplos tipos de suprimentos simultaneamente
-- Assume capacidades constantes nas arestas
-- Não implementa priorização dinâmica
+## Safety and Ethical Considerations
 
-### Melhorias Planejadas
-1. Suporte a múltiplos tipos de recursos
-2. Implementação de priorização dinâmica
-3. Interface gráfica para visualização
-4. Sistema de log e monitoramento em tempo real
+### Important Notes
+1. This algorithm is designed as an undergraduate project only and should not be the sole decision-maker in emergency situations
+2. Local expertise and human judgment should always take precedence
 
-## Licença
-MIT License - veja o arquivo LICENSE.md para detalhes
+### Best Practices
+- Regularly update priority levels based on current needs
+- Verify route capacities and travel times frequently
+- Consider alternative routes for redundancy
+- Maintain backup plans for system failures
 
-## Contato
-[Seu Nome] - [seu.email@dominio.com]
+## Limitations
+1. Assumes static network conditions
+2. Does not account for:
+   - Dynamic changes in road conditions
+   - Weather impacts
+   - Real-time traffic
 
-## Agradecimentos
-- Professor [Nome] pela orientação
-- [Outros agradecimentos relevantes]
+## Example Scenario
+```python
+def example_usage():
+    # Network setup
+    vertices = {'s', 'v1', 'v2', 'v3', 'v4', 't'}
+    edges = {('s','v1'), ('s','v2'), ('v1','v3'), ('v2','v3'), ('v3','t')}
+    priorities = {'v1': 1, 'v2': 2, 'v3': 3, 'v4': 1, 't': 3}
+    
+    network = EmergencyNetwork(vertices, edges, priorities)
+    
+    # Add routes
+    network.add_edge('s', 'v1', capacity=10, travel_time=2)
+    network.add_edge('s', 'v2', capacity=8, travel_time=3)
+    
+    # Add processing times
+    network.set_vertex_residence_time('v1', 1)
+    network.set_vertex_residence_time('v2', 1)
+    
+    # Run distribution
+    paths, times, total_flow = network.distribute_supplies('s', 't', 15)
+```
+
+## Contributing
+Contributions to improve the algorithm are welcome. Please ensure that any modifications:
+- Maintain or improve safety considerations
+- Include appropriate documentation
+- Add relevant test cases
+- Consider real-world application constraints
+
+## Priority Model Design
+
+### Priority System Overview
+The priority system was designed to balance two critical factors in emergency response:
+1. Time efficiency of supply delivery
+2. Urgency level of affected areas
+
+### Priority Scale
+- Priorities are assigned on a numerical scale (1 to N)
+- Higher numbers indicate higher priority (e.g., 3 is more urgent than 1)
+- The scale is flexible and can be adjusted based on specific needs
+- Default priority is 1 for unassigned locations
+
+### Priority Factor Calculation
+The algorithm uses a priority factor that:
+- Transforms priority levels into routing weights
+- Adjusts effective travel times based on location urgency
+- Is calculated using the formula: 
+  ```python
+  priority_factor = (max_priority - vertex_priority + 1) / max_priority
+  ```
+
+### Impact on Route Selection
+- Higher priority locations get lower priority factors
+- Lower priority factors reduce effective travel times
+- This makes high-priority routes more attractive to the pathfinding algorithm
+- Example:
+  ```
+  For max_priority = 4:
+  Priority 4 (Highest) → Factor = 0.25
+  Priority 3          → Factor = 0.50
+  Priority 2          → Factor = 0.75
+  Priority 1 (Lowest) → Factor = 1.00
+  ```
+
+### Dynamic Priority Considerations
+The current implementation supports:
+- Static priority assignments
+- Manual priority updates
+- Different priority scales for different scenarios
+
+Future enhancements could include:
+- Dynamic priority adjustment based on supply levels
+- Time-based priority evolution
+- Multi-factor priority calculation
+
+
+### Limitations and Considerations
+- Priorities are relative within the system
+- The model assumes priorities remain constant during distribution
+- May need adjustment for specific emergency types
+
+
+## Acknowledgments
+This implementation is adapted from the research paper "The Distribution of Emergency Supplies Based on Network Flow" with additional priority considerations for disaster response scenarios.
+
+## Contact
+For questions and support, please open an issue in the repository.
+
+## References
+1. Original Network Flow Algorithm: Zheng Jie, QinYong-bin, Wei Jia-yin
