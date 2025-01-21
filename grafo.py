@@ -68,8 +68,8 @@ class Grafo:
         for aresta, fluxo in self.arestas.items():
             if fluxo > 0:
                 tempo += fluxo * self.tempo_arestas[aresta]
-
-        for _, tempo in self.tempo_nos.items():
-            tempo += tempo
-
+        
+        for tempo_no in self.tempo_nos.values():
+            tempo += tempo_no
+        
         return tempo
