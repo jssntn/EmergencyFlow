@@ -7,8 +7,8 @@ class EmergencyNetwork:
         self.V = vertices
         self.E = edges
         self.priorities = priorities
-        self.TE = {}
-        self.Ts = {}
+        self.TE = {} # Information on edge times
+        self.Ts = {} # Information on vertices times
         self.capacities = {}
         self.adj_list = defaultdict(list)
 
