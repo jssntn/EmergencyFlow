@@ -1,4 +1,4 @@
-# Priority-based Emergency Distribution Algorithm
+# EmergencyFlow
 
 ## Overview
 This algorithm is an adaptation of network flow techniques for emergency supply distribution, specifically designed to handle priority-based routing in disaster response scenarios. It optimizes the distribution of emergency supplies by considering both time constraints and the varying urgency levels of different affected areas.
