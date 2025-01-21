@@ -31,7 +31,8 @@ class Grafo:
                 if (v, u) in self.arestas:  # Fluxo reverso
                     self.arestas[(v, u)] -= capacidade_minima
                 else:
-                    self.arestas[(v, u)] =- capacidade_minima
+                    self.arestas[(v, u)] = -capacidade_minima
+                self.capacidades[(v, u)] = 0
 
             fluxo_total += capacidade_minima
             caminho = self.encontrar_caminho(origem, destino)
@@ -41,14 +42,16 @@ class Grafo:
     def encontrar_caminho(self, origem, destino):
         visitados = {origem}
         fila = deque()
-        fila.append((origem), [])
+        fila.append((origem, []))
 
         while fila:
             no_atual, caminho = fila.popleft()
 
             for vizinho in self.nos:
-                if (no_atual, vizinho) in self.arestas:
-                    capacidade_residual = self.capacidades[(no_atual, vizinho)] - self.arestas[(no_atual, vizinho)]
+                if (no_atual, vizinho) in self.arestas.keys():
+                    cap = self.capacidades[(no_atual, vizinho)]
+                    fluxo = self.arestas[(no_atual, vizinho)]
+                    capacidade_residual = cap - fluxo
                     if capacidade_residual > 0 and vizinho not in visitados:
                         novo_caminho = caminho + [(no_atual, vizinho)]
                         if vizinho == destino:

@@ -12,3 +12,6 @@ for line in f.readlines():
         grafo.adicionar_aresta(*parts)
 
 
+print(grafo.calcular_fluxo("vs", "vt"))
+
+print(grafo.calcular_tempo())
