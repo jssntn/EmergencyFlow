@@ -118,7 +118,6 @@ class EmergencyNetwork:
 
         return paths, times, current_flow
 
-
 def example_usage():
     vertices = {'s', 'v1', 'v2', 'v3', 'v4', 't'}
     edges = {('s', 'v1'), ('s', 'v2'), ('v1', 'v3'), ('v2', 'v3'), ('v3', 't')}
@@ -137,6 +136,78 @@ def example_usage():
     network.set_vertex_residence_time('v3', 2)
 
     paths, times, total_flow = network.distribute_supplies('s', 't', 15)
+
+    print(f"Total flow: {total_flow}")
+    for i, (path, flow) in enumerate(paths):
+        print(f"Path {i + 1}: {path}, Flow: {flow}, Time: {times[i]}")
+
+def example_medium_usage():
+    vertices = {f'v{i}' for i in range(40)}  # v0, v1, ..., v39
+    edges = {
+        ('v0', 'v1'), ('v0', 'v2'), ('v1', 'v3'), ('v1', 'v4'), ('v2', 'v5'), 
+        ('v3', 'v6'), ('v4', 'v7'), ('v5', 'v8'), ('v6', 'v9'), ('v7', 'v10'), 
+        ('v8', 'v11'), ('v9', 'v12'), ('v10', 'v13'), ('v11', 'v14'), ('v12', 'v15'),
+        ('v13', 'v16'), ('v14', 'v17'), ('v15', 'v18'), ('v16', 'v19'), ('v17', 'v20'),
+        ('v18', 'v21'), ('v19', 'v22'), ('v20', 'v23'), ('v21', 'v24'), ('v22', 'v25'),
+        ('v23', 'v26'), ('v24', 'v27'), ('v25', 'v28'), ('v26', 'v29'), ('v27', 'v30'),
+        ('v28', 'v31'), ('v29', 'v32'), ('v30', 'v33'), ('v31', 'v34'), ('v32', 'v35'),
+        ('v33', 'v36'), ('v34', 'v37'), ('v35', 'v38'), ('v36', 'v39'), ('v2', 'v9'),
+        ('v3', 'v15'), ('v5', 'v20'), ('v8', 'v30'), ('v10', 'v25'), ('v12', 'v35'),
+        ('v13', 'v32'), ('v18', 'v34'), ('v19', 'v38'), ('v6', 'v17'), ('v7', 'v22'),
+        ('v11', 'v26'), ('v14', 'v28'), ('v16', 'v29'), ('v31', 'v36'), ('v4', 'v12'),
+        ('v9', 'v21'), ('v20', 'v27'), ('v22', 'v31'), ('v26', 'v39')
+    }
+    priorities = {f'v{i}': (i % 5) + 1 for i in range(40)}
+
+    network = EmergencyNetwork(vertices, edges, priorities)
+
+    for u, v in edges:
+        capacity = (hash(u) + hash(v)) % 10 + 1
+        travel_time = (hash(u) * hash(v)) % 5 + 1 
+        network.add_edge(u, v, capacity=capacity, travel_time=travel_time)
+
+    for vertex in vertices:
+        residence_time = hash(vertex) % 4
+        network.set_vertex_residence_time(vertex, time=residence_time)
+
+
+    paths, times, total_flow = network.distribute_supplies('v0', 'v39', 100)
+
+    # Exibe os resultados
+    print(f"Total flow: {total_flow}")
+    for i, (path, flow) in enumerate(paths):
+        print(f"Path {i + 1}: {path}, Flow: {flow}, Time: {times[i]}")
+
+def example_large_usage():
+    vertices = {f'v{i}' for i in range(200)}
+
+    edges = set()
+    edges.update((f'v0', f'v{i}') for i in range(1, 8)) 
+
+    for i in range(1, 200):
+        if len(edges) >= 500:
+            break
+        for j in range(1, 4):
+            v1 = f'v{i}'
+            v2 = f'v{(i + j) % 200}'
+            edges.add((v1, v2))
+            if len(edges) >= 500:
+                break
+
+    priorities = {f'v{i}': (i % 5) + 1 for i in range(200)}
+
+    network = EmergencyNetwork(vertices, edges, priorities)
+
+    for u, v in edges:
+        capacity = (int(u[1:]) + int(v[1:])) % 20 + 1
+        travel_time = (int(u[1:]) * int(v[1:])) % 10 + 1  
+        network.add_edge(u, v, capacity=capacity, travel_time=travel_time)
+
+    for vertex in vertices:
+        residence_time = int(vertex[1:]) % 4
+        network.set_vertex_residence_time(vertex, time=residence_time)
+
+    paths, times, total_flow = network.distribute_supplies('v0', 'v35', 300)
 
     print(f"Total flow: {total_flow}")
     for i, (path, flow) in enumerate(paths):
